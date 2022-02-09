@@ -1,0 +1,30 @@
+
+name: download
+
+on:
+  push:
+    branches:
+      [ master ]
+#   watch:
+#     types: started
+  schedule:
+    - cron: "15 7 * * *"
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'checkout'
+        uses: actions/checkout@v2
+      - name: 'setup python'
+        uses: actions/setup-python@master
+        with: 
+          python-version: 3.8
+      - name: 'Run'
+        id: 'Run'
+        env: 
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+        run: |
+          python -m pip install --upgrade pip
+          pip install --upgrade aligo
+          python share_ali.py $REFRESH_TOKEN
