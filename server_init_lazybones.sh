@@ -37,3 +37,11 @@ echo "root:${root_password}" | chpasswd
 
 # 重启 sshd 服务
 systemctl restart sshd
+
+# 开启 BBR
+echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+sysctl -p
+
+# 设置交换分区
+curl -O https://raw.githubusercontent.com/WANG-Guangxin/Utils/master/swap.sh && chmod +x swap.sh && ./swap.sh
